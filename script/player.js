@@ -13,7 +13,7 @@ class Player {
 
         window.addEventListener("mousemove", (e) => this.updateAngle(e));
 
-        this.startShoot();
+        //this.startShoot();
     }
 
     updateAngle(event) {
@@ -65,10 +65,10 @@ class Player {
         ctx.restore();
     }
 
-    startShoot() {
+    /*startShoot() {
         setInterval(() => {
             //console.log(this.y);
             let bullet = new Bullet(this.x + this.width / 2, this.y + this.height / 2, this.angle);
         }, 300);
-    }
+    }*/
 }

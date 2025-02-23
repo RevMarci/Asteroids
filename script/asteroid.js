@@ -1,8 +1,6 @@
 class Asteroid {
     constructor(size) {
         this.size = size;
-        this.seen = false;
-        this.active = true;
         this.angle = 0;
         this.speed = Math.floor(Math.random() * 5) + 1;
 
@@ -33,12 +31,10 @@ class Asteroid {
         console.log(this);
 
         this.update = this.update.bind(this);
-        this.animationFrame = requestAnimationFrame(this.update);
     }
 
     draw() {
         let ctx = GameArea.instance?.context;
-        //if (!ctx || !this.active) return; // Ha már töröltük, ne rajzoljon
 
         ctx.fillStyle = "black";
         ctx.fillRect(this.x, this.y, this.size, this.size);

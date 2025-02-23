@@ -26,6 +26,9 @@ class GameArea {
         this.asteroids = [];
         this.startAsteroid();
 
+        this.bullets = [];
+        this.startBullet();
+
         this.updateGameArea(); // Indítja az animációs ciklust
     }
 
@@ -48,6 +51,11 @@ class GameArea {
             return !asteroid.isOutOfBounds(); // Csak a bent maradtakat tartja meg
         });
 
+        this.bullets = this.bullets.filter(bullet => {
+            bullet.update();
+            return !bullet.isOutOfBounds();
+        });
+
         requestAnimationFrame(() => this.updateGameArea());
     }
 
@@ -60,6 +68,17 @@ class GameArea {
     spawnAsteroid() {
         let asteroid = new Asteroid(40); // Adj neki egy méretet
         this.asteroids.push(asteroid);
+    }
+
+    startBullet() {
+        setInterval(() => {
+            this.spawnBullet();
+        }, 300);
+    }
+
+    spawnBullet() {
+        let bullet = new Bullet(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.player.angle);
+        this.bullets.push(bullet);
     }
 
     endGame() {
