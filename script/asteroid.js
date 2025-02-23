@@ -50,4 +50,11 @@ class Asteroid {
 
         this.draw();
     }
+
+    isOutOfBounds() {
+        return (
+            this.x < 0 || this.x > GameArea.instance.canvas.width ||
+            this.y < 0 || this.y > GameArea.instance.canvas.height
+        );
+    }
 }

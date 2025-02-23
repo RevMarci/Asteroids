@@ -38,7 +38,10 @@ class GameArea {
         this.player.update();
         this.player.draw();
 
-        this.asteroids.forEach(asteroid => asteroid.update());
+        this.asteroids = this.asteroids.filter(asteroid => {
+            asteroid.update();
+            return !asteroid.isOutOfBounds(); // Csak a bent maradtakat tartja meg
+        });
 
         requestAnimationFrame(() => this.updateGameArea());
     }
