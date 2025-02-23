@@ -1,5 +1,6 @@
 class Asteroid {
-    constructor(size) {
+    constructor(size, health) {
+        this.health = health;
         this.size = size;
         this.angle = 0;
         this.speed = Math.floor(Math.random() * 5) + 1;

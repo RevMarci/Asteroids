@@ -44,6 +44,18 @@ class GameArea {
         this.asteroids = this.asteroids.filter(asteroid => {
             asteroid.update();
 
+            this.bullets = this.bullets.filter(bullet => {
+                if (asteroid.isHit(bullet.x, bullet.y)) {
+                    asteroid.health--;
+                    return false;
+                }
+                return true;
+            });
+
+            if (asteroid.health == 0) {
+                return false;
+            }
+
             if (asteroid.isHit(this.player.x, this.player.y)) {
                 this.endGame();
             }
@@ -62,11 +74,11 @@ class GameArea {
     startAsteroid() {
         setInterval(() => {
             this.spawnAsteroid();
-        }, 2000); // 2 másodpercenként új aszteroida
+        }, 500); // 2 másodpercenként új aszteroida
     }
 
     spawnAsteroid() {
-        let asteroid = new Asteroid(40); // Adj neki egy méretet
+        let asteroid = new Asteroid(40, 3); // Adj neki egy méretet
         this.asteroids.push(asteroid);
     }
 
