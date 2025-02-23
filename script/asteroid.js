@@ -51,6 +51,13 @@ class Asteroid {
         this.draw();
     }
 
+    isHit(objX, objY) {
+        return (
+            this.x < objX && this.x + this.size > objX &&
+            this.y < objY && this.y + this.size > objY
+        );
+    }
+
     isOutOfBounds() {
         return (
             this.x < 0 || this.x > GameArea.instance.canvas.width ||

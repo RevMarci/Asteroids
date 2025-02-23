@@ -40,6 +40,11 @@ class GameArea {
 
         this.asteroids = this.asteroids.filter(asteroid => {
             asteroid.update();
+
+            if (asteroid.isHit(this.player.x, this.player.y)) {
+                this.endGame();
+            }
+
             return !asteroid.isOutOfBounds(); // Csak a bent maradtakat tartja meg
         });
 
@@ -55,6 +60,10 @@ class GameArea {
     spawnAsteroid() {
         let asteroid = new Asteroid(40); // Adj neki egy méretet
         this.asteroids.push(asteroid);
+    }
+
+    endGame() {
+        cancelAnimationFrame();
     }
 }
 
