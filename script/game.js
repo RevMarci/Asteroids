@@ -21,7 +21,11 @@ class GameArea {
             this.keys[e.key] = false;
         });
 
-        this.player = new Player(30, 10, "red", 100, 100);
+        this.player = new Player(30, 10, "red", window.innerWidth/2, window.innerHeight/2);
+
+        this.asteroids = [];
+        this.startAsteroid();
+
         this.updateGameArea(); // Indítja az animációs ciklust
     }
 
@@ -33,7 +37,21 @@ class GameArea {
         this.clear();
         this.player.update();
         this.player.draw();
+
+        this.asteroids.forEach(asteroid => asteroid.update());
+
         requestAnimationFrame(() => this.updateGameArea());
+    }
+
+    startAsteroid() {
+        setInterval(() => {
+            this.spawnAsteroid();
+        }, 2000); // 2 másodpercenként új aszteroida
+    }
+
+    spawnAsteroid() {
+        let asteroid = new Asteroid(40); // Adj neki egy méretet
+        this.asteroids.push(asteroid);
     }
 }
 

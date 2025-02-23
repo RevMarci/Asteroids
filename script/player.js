@@ -67,6 +67,7 @@ class Player {
 
     startShoot() {
         setInterval(() => {
+            //console.log(this.y);
             let bullet = new Bullet(this.x + this.width / 2, this.y + this.height / 2, this.angle);
         }, 300);
     }
