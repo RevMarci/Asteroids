@@ -22,6 +22,7 @@ class GameArea {
         });
 
         this.player = new Player(30, 10, "red", window.innerWidth/2, window.innerHeight/2);
+        this.points = 0;
 
         this.asteroids = [];
         this.startAsteroid();
@@ -40,6 +41,7 @@ class GameArea {
         this.clear();
         this.player.update();
         this.player.draw();
+        this.drawPoints();
 
         this.asteroids = this.asteroids.filter(asteroid => {
             asteroid.update();
@@ -53,10 +55,11 @@ class GameArea {
             });
 
             if (asteroid.health == 0) {
+                this.points += 2;
                 return false;
             }
 
-            if (asteroid.isHit(this.player.x, this.player.y)) {
+            if (asteroid.isHit(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2)) {
                 this.endGame();
             }
 
@@ -74,7 +77,7 @@ class GameArea {
     startAsteroid() {
         setInterval(() => {
             this.spawnAsteroid();
-        }, 500); // 2 másodpercenként új aszteroida
+        }, 500); // uj aszteroida
     }
 
     spawnAsteroid() {
@@ -91,6 +94,11 @@ class GameArea {
     spawnBullet() {
         let bullet = new Bullet(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.player.angle);
         this.bullets.push(bullet);
+    }
+
+    drawPoints() {
+        this.context.font = "50px arial";
+        this.context.fillText(this.points, 100, 60)
     }
 
     endGame() {
