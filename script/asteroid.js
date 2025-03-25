@@ -37,8 +37,11 @@ class Asteroid {
     draw() {
         let ctx = GameArea.instance?.context;
 
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size ,0 ,2*Math.PI);
         ctx.fillStyle = "black";
-        ctx.fillRect(this.x, this.y, this.size, this.size);
+        ctx.fill();
+        ctx.stroke();
     }
 
     update() {
@@ -48,10 +51,12 @@ class Asteroid {
         this.draw();
     }
 
-    isHit(objX, objY) {
+    isHit(objX, objY, objSize) {
+        let distance_x = Math.abs(this.x - objX);
+        let distance_y = Math.abs(this.y - objY);
+        let distance = Math.sqrt(distance_x * distance_x + distance_y * distance_y) - this.size - objSize;
         return (
-            this.x < objX && this.x + this.size > objX &&
-            this.y < objY && this.y + this.size > objY
+            distance < 1
         );
     }
 

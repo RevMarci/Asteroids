@@ -12,8 +12,6 @@ class Player {
         this.lastY = y; // Utolsó Y pozíció
 
         window.addEventListener("mousemove", (e) => this.updateAngle(e));
-
-        //this.startShoot();
     }
 
     updateAngle(event) {
@@ -48,10 +46,6 @@ class Player {
         // Ha nincs egérmozgás, de van mozgás billentyűkkel, frissítjük az irányt
         if (moving) {
             this.angle = Math.atan2(this.lastY - (this.y + this.height / 2), this.lastX - (this.x + this.width / 2));
-
-            /*this.angle = Math.atan2(this.y - this.lastY, this.x - this.lastX);
-            this.lastX = this.x;
-            this.lastY = this.y;*/
         }
     }
 
@@ -64,11 +58,4 @@ class Player {
         ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height);
         ctx.restore();
     }
-
-    /*startShoot() {
-        setInterval(() => {
-            //console.log(this.y);
-            let bullet = new Bullet(this.x + this.width / 2, this.y + this.height / 2, this.angle);
-        }, 300);
-    }*/
 }

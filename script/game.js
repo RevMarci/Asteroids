@@ -47,7 +47,7 @@ class GameArea {
             asteroid.update();
 
             this.bullets = this.bullets.filter(bullet => {
-                if (asteroid.isHit(bullet.x, bullet.y)) {
+                if (asteroid.isHit(bullet.x, bullet.y, bullet.size)) {
                     asteroid.health--;
                     return false;
                 }
@@ -59,7 +59,7 @@ class GameArea {
                 return false;
             }
 
-            if (asteroid.isHit(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2)) {
+            if (asteroid.isHit(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.player.height)) {
                 this.endGame();
             }
 
