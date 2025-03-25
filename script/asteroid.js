@@ -1,5 +1,6 @@
 class Asteroid {
     constructor(size, health) {
+        this.image = document.getElementById("asteroid1");
         this.health = health;
         this.size = size;
         this.angle = 0;
@@ -39,9 +40,10 @@ class Asteroid {
 
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size ,0 ,2*Math.PI);
-        ctx.fillStyle = "black";
-        ctx.fill();
+        //ctx.fillStyle = "black";
+        //ctx.fill();
         ctx.stroke();
+        ctx.drawImage(this.image, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
     }
 
     update() {
