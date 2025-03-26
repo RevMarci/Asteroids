@@ -1,36 +1,32 @@
 class GameArea {
-    static instance; // Statikus példány tárolása
+    static instance;
 
     constructor() {
-        GameArea.instance = this; // Elmentjük az aktuális példányt
+        GameArea.instance = this;
         this.canvas = document.createElement("canvas");
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
 
-        this.keys = {}; // Billentyűállapotok tárolása
+        this.keys = {};
+        this.handleKeyDown = (e) => { this.keys[e.key] = true; };
+        this.handleKeyUp = (e) => { this.keys[e.key] = false; };
 
-        // Billentyűleütés figyelése
-        window.addEventListener("keydown", (e) => {
-            this.keys[e.key] = true;
-        });
+        window.addEventListener("keydown", this.handleKeyDown);
+        window.addEventListener("keyup", this.handleKeyUp);
 
-        // Billentyű felengedése
-        window.addEventListener("keyup", (e) => {
-            this.keys[e.key] = false;
-        });
-
-        this.player = new Player(30, 10, "red", window.innerWidth/2, window.innerHeight/2);
+        this.player = new Player(30, 10, "red", window.innerWidth / 2, window.innerHeight / 2);
         this.points = 0;
 
         this.asteroids = [];
-        this.startAsteroid();
-
         this.bullets = [];
-        this.startBullet();
+        
+        this.asteroidInterval = setInterval(() => this.spawnAsteroid(), 500);
+        this.bulletInterval = setInterval(() => this.spawnBullet(), 300);
 
-        this.updateGameArea(); // Indítja az animációs ciklust
+        this.animationFrameId = null;
+        this.updateGameArea();
     }
 
     clear() {
@@ -63,7 +59,7 @@ class GameArea {
                 this.endGame();
             }
 
-            return !asteroid.isOutOfBounds(); // Csak a bent maradtakat tartja meg
+            return !asteroid.isOutOfBounds();
         });
 
         this.bullets = this.bullets.filter(bullet => {
@@ -71,24 +67,12 @@ class GameArea {
             return !bullet.isOutOfBounds();
         });
 
-        requestAnimationFrame(() => this.updateGameArea());
-    }
-
-    startAsteroid() {
-        setInterval(() => {
-            this.spawnAsteroid();
-        }, 500); // uj aszteroida
+        this.animationFrameId = requestAnimationFrame(() => this.updateGameArea());
     }
 
     spawnAsteroid() {
-        let asteroid = new Asteroid(40, 3); // Adj neki egy méretet
+        let asteroid = Math.random() < 0.5 ? new Asteroid(3) : new Asteroid(2);
         this.asteroids.push(asteroid);
-    }
-
-    startBullet() {
-        setInterval(() => {
-            this.spawnBullet();
-        }, 300);
     }
 
     spawnBullet() {
@@ -98,15 +82,27 @@ class GameArea {
 
     drawPoints() {
         this.context.font = "50px arial";
-        this.context.fillText(this.points, 100, 60)
+        this.context.fillText(this.points, 100, 60);
     }
 
     endGame() {
-        cancelAnimationFrame();
+        if (this.animationFrameId) {
+            cancelAnimationFrame(this.animationFrameId);
+        }
+
+        clearInterval(this.asteroidInterval);
+        clearInterval(this.bulletInterval);
+
+        window.removeEventListener("keydown", this.handleKeyDown);
+        window.removeEventListener("keyup", this.handleKeyUp);
+
+        if (document.body.contains(this.canvas)) {
+            document.body.removeChild(this.canvas);
+        }
     }
 }
 
-var game; // Itt tároljuk a játék példányát
+var game;
 
 function startGame() {
     game = new GameArea();
