@@ -6,19 +6,19 @@ class Asteroid {
             case 1:
                 this.health = 3;
                 this.size = 20;
-                this.speed = Math.floor(Math.random() * 3) + 3;
+                this.speed = Math.random() * 5 + 1.6;
                 break;
         
             case 2:
                 this.health = 6;
                 this.size = 40;
-                this.speed = Math.floor(Math.random() * 3) + 2;
+                this.speed = Math.random() * 4 + 1.2;
                 break;
 
             case 3:
                 this.health = 12;
                 this.size = 80;
-                this.speed = Math.floor(Math.random() * 3) + 1;
+                this.speed = Math.random() * 3 + 0.8;
                 break;
 
             default:
@@ -34,23 +34,23 @@ class Asteroid {
 
             if (side == 0) {
                 // Left
-                this.x = 0;
+                this.x = 0 - this.size;
                 this.y = Math.floor(Math.random() * window.innerHeight);
                 this.angle = Math.random() * 0.7 - 0.35 - (this.y / window.innerHeight - 0.5); 
             } else if (side == 1) {
                 // Right
-                this.x = window.innerWidth;
+                this.x = window.innerWidth + this.size;
                 this.y = Math.floor(Math.random() * window.innerHeight);
                 this.angle = Math.random() * 0.7 - 0.35 - (this.y / window.innerHeight - 0.5) + Math.PI;
             } else if (side == 2) {
                 // Up
                 this.x = Math.floor(Math.random() * window.innerWidth);
-                this.y = 0;
+                this.y = 0 - this.size;
                 this.angle = Math.random() * 0.7 - 0.35 - (this.y / window.innerHeight - 0.5) + Math.PI / 2;
             } else {
                 // Down
                 this.x = Math.floor(Math.random() * window.innerWidth);
-                this.y = window.innerHeight;
+                this.y = window.innerHeight + this.size;
                 this.angle = Math.random() * 0.7 - 0.35 - (this.y / window.innerHeight - 0.5) - Math.PI / 2;
             }
         }
@@ -89,8 +89,8 @@ class Asteroid {
 
     isOutOfBounds() {
         return (
-            this.x < 0 || this.x > GameArea.instance.canvas.width ||
-            this.y < 0 || this.y > GameArea.instance.canvas.height
+            this.x + this.size < 0 || this.x - this.size > GameArea.instance.canvas.width ||
+            this.y + this.size < 0 || this.y - this.size > GameArea.instance.canvas.height
         );
     }
 }
