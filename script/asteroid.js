@@ -1,7 +1,8 @@
 class Asteroid {
     constructor(lvl, x = 0, y = 0, angle = 0) {
         this.image = document.getElementById("asteroid1");
-        switch (lvl) {
+        this.lvl = lvl;
+        switch (this.lvl) {
             case 1:
                 this.health = 3;
                 this.size = 20;

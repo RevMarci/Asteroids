@@ -18,11 +18,12 @@ class GameArea {
 
         this.player = new Player(30, 10, "red", window.innerWidth / 2, window.innerHeight / 2);
         this.points = 0;
+        this.spawnRate = 3000;
 
         this.asteroids = [];
         this.bullets = [];
         
-        this.asteroidInterval = setInterval(() => this.spawnAsteroid(), 500);
+        this.asteroidInterval = setInterval(() => this.spawnAsteroid(), this.spawnRate);
         this.bulletInterval = setInterval(() => this.spawnBullet(), 300);
 
         this.animationFrameId = null;
@@ -39,6 +40,7 @@ class GameArea {
         this.player.draw();
         this.drawPoints();
 
+        let newAsteroids = [];
         this.asteroids = this.asteroids.filter(asteroid => {
             asteroid.update();
 
@@ -51,7 +53,16 @@ class GameArea {
             });
 
             if (asteroid.health == 0) {
-                this.points += 2;
+                this.points += asteroid.lvl;
+                this.spawnRate = Math.max(200, this.spawnRate - asteroid.lvl * 30);
+                clearInterval(this.asteroidInterval);
+                this.asteroidInterval = setInterval(() => this.spawnAsteroid(), this.spawnRate);
+
+                if (asteroid.lvl != 1) {
+                    for (let i = 0; i < Math.floor(Math.random() * 3) + 1; i++) {
+                        newAsteroids.push(new Asteroid(asteroid.lvl - 1, asteroid.x, asteroid.y, asteroid.angle + Math.random() - 0.7));
+                    }
+                }
                 return false;
             }
 
@@ -61,6 +72,7 @@ class GameArea {
 
             return !asteroid.isOutOfBounds();
         });
+        this.asteroids = [...this.asteroids, ...newAsteroids];
 
         this.bullets = this.bullets.filter(bullet => {
             bullet.update();
@@ -71,7 +83,7 @@ class GameArea {
     }
 
     spawnAsteroid() {
-        let asteroid = Math.random() < 0.5 ? new Asteroid(3) : new Asteroid(2);
+        let asteroid = new Asteroid(Math.floor(Math.random() * 2) + 2);
         this.asteroids.push(asteroid);
     }
 
