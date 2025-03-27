@@ -10,3 +10,15 @@ canvas {
 .hidden {
     display: none;
 }
+
+#asteroid2 {
+    rotate: 90deg;
+}
+
+#asteroid3 {
+    rotate: 180deg;
+}
+
+#asteroid4 {
+    rotate: 270deg;
+}

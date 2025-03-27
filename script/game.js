@@ -18,7 +18,7 @@ class GameArea {
 
         this.player = new Player(30, 10, "red", window.innerWidth / 2, window.innerHeight / 2);
         this.points = 0;
-        this.spawnRate = 3000;
+        this.spawnRate = 2000;
 
         this.asteroids = [];
         this.bullets = [];
@@ -54,7 +54,9 @@ class GameArea {
 
             if (asteroid.health == 0) {
                 this.points += asteroid.lvl;
-                this.spawnRate = Math.max(200, this.spawnRate - asteroid.lvl * 30);
+                this.spawnRate = Math.max(200, this.spawnRate - asteroid.lvl * 10);
+                //this.spawnRate = 400 + 1100 * Math.exp(-0.01826 * this.points);
+                console.log("SpawnRate: " + this.spawnRate);
                 clearInterval(this.asteroidInterval);
                 this.asteroidInterval = setInterval(() => this.spawnAsteroid(), this.spawnRate);
 
