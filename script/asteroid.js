@@ -1,34 +1,26 @@
 class Asteroid {
     constructor(lvl, x = 0, y = 0, angle = 0) {
-        switch (Math.floor(Math.random() * 2)) {
-            case 0:
-                this.image = document.getElementById("asteroid1");
-                break;
-
-            case 1:
-                this.image = document.getElementById("asteroid2");
-                break;
-
-            default:
-                break;
-        }
+        this.image = document.getElementById("asteroid1");
         this.lvl = lvl;
         switch (this.lvl) {
             case 1:
                 this.health = 2;
                 this.size = 20;
+                this.point = 3;
                 this.speed = Math.random() * 2.5 + 1.6;
                 break;
         
             case 2:
                 this.health = 4;
                 this.size = 40;
+                this.point = 4;
                 this.speed = Math.random() * 2 + 1.2;
                 break;
 
             case 3:
                 this.health = 6;
                 this.size = 80;
+                this.point = 5;
                 this.speed = Math.random() * 1.5 + 0.8;
                 break;
 
@@ -74,11 +66,11 @@ class Asteroid {
     draw() {
         let ctx = GameArea.instance?.context;
 
-        ctx.drawImage(this.image, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+        ctx.drawImage(this.image, this.x - this.size * 1.05, this.y - this.size * 1.05, this.size * 2.1, this.size * 2.1);
 
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size ,0 ,2*Math.PI);
-        ctx.stroke();
+        //ctx.beginPath();
+        //ctx.arc(this.x, this.y, this.size ,0 ,2*Math.PI);
+        //ctx.stroke();
     }
 
     update() {

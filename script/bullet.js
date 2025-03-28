@@ -2,7 +2,7 @@ class Bullet {
     constructor(x, y, angle) {
         this.x = x;
         this.y = y;
-        this.size = 4;
+        this.size = 5;
         this.angle = angle;
         this.speed = 10;
         this.active = true; // Az objektum aktív állapotban van
@@ -13,7 +13,7 @@ class Bullet {
     draw() {
         let ctx = GameArea.instance?.context;
 
-        ctx.fillStyle = "black";
+        ctx.fillStyle = "#01F1F7";
         ctx.fillRect(this.x, this.y, this.size, this.size);
     }
     

@@ -3,8 +3,12 @@
     padding: 0;
 }
 
+body {
+    overflow: hidden;
+}
+
 canvas {
-    border: 1px solid red;
+    /*border: 1px solid red;*/
 }
 
 .hidden {

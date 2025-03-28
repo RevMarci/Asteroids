@@ -8,6 +8,7 @@ class GameArea {
         this.canvas.height = window.innerHeight;
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        this.backgroundImage = document.getElementById("gackground");
 
         this.keys = {};
         this.handleKeyDown = (e) => { this.keys[e.key] = true; };
@@ -16,9 +17,9 @@ class GameArea {
         window.addEventListener("keydown", this.handleKeyDown);
         window.addEventListener("keyup", this.handleKeyUp);
 
-        this.player = new Player(30, 10, "red", window.innerWidth / 2, window.innerHeight / 2);
+        this.player = new Player(window.innerWidth / 2, window.innerHeight / 2);
         this.points = 0;
-        this.spawnRate = 2000;
+        this.spawnRate = 1500;
 
         this.asteroids = [];
         this.bullets = [];
@@ -36,6 +37,7 @@ class GameArea {
 
     updateGameArea() {
         this.clear();
+        this.drawBackground();
         this.player.update();
         this.player.draw();
         this.drawPoints();
@@ -53,8 +55,8 @@ class GameArea {
             });
 
             if (asteroid.health == 0) {
-                this.points += asteroid.lvl;
-                this.spawnRate = Math.max(200, this.spawnRate - asteroid.lvl * 10);
+                this.points += asteroid.point;
+                this.spawnRate = Math.max(200, this.spawnRate - asteroid.lvl * 5);
                 //this.spawnRate = 400 + 1100 * Math.exp(-0.01826 * this.points);
                 console.log("SpawnRate: " + this.spawnRate);
                 clearInterval(this.asteroidInterval);
@@ -68,7 +70,7 @@ class GameArea {
                 return false;
             }
 
-            if (asteroid.isHit(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.player.height)) {
+            if (asteroid.isHit(this.player.x, this.player.y, this.player.size)) {
                 this.endGame();
             }
 
@@ -90,13 +92,17 @@ class GameArea {
     }
 
     spawnBullet() {
-        let bullet = new Bullet(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.player.angle);
+        let bullet = new Bullet(this.player.x, this.player.y, this.player.angle);
         this.bullets.push(bullet);
     }
 
     drawPoints() {
         this.context.font = "50px arial";
         this.context.fillText(this.points, 100, 60);
+    }
+
+    drawBackground() {
+        this.context.drawImage(this.backgroundImage, 0, 0, this.canvas.width, this.canvas.height);
     }
 
     endGame() {

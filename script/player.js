@@ -1,8 +1,7 @@
 class Player {
-    constructor(width, height, color, x, y) {
-        this.width = width;
-        this.height = height;
-        this.color = color;
+    constructor(x, y) {
+        this.image = document.getElementById("ship");
+        this.size = 30;
         this.x = x;
         this.y = y;
         this.speed = 3;
@@ -20,7 +19,7 @@ class Player {
         this.lastY = event.clientY - rect.top;
 
         // Szög számítása az egér felé
-        this.angle = Math.atan2(this.lastY - (this.y + this.height / 2), this.lastX - (this.x + this.width / 2));
+        this.angle = Math.atan2(this.lastY - this.y, this.lastX - this.x);
     }
 
     update() {
@@ -45,17 +44,24 @@ class Player {
 
         // Ha nincs egérmozgás, de van mozgás billentyűkkel, frissítjük az irányt
         if (moving) {
-            this.angle = Math.atan2(this.lastY - (this.y + this.height / 2), this.lastX - (this.x + this.width / 2));
+            this.angle = Math.atan2(this.lastY - this.y, this.lastX - this.x);
         }
     }
 
     draw() {
         let ctx = GameArea.instance.context;
         ctx.save();
-        ctx.translate(this.x + this.width / 2, this.y + this.height / 2);
+        ctx.translate(this.x, this.y);
         ctx.rotate(this.angle);
-        ctx.fillStyle = this.color;
-        ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height);
+        
+        // Kör rajzolása
+        //ctx.drawImage(this.image, this.x - this.size, this.y- this.size, this.size * 2, this.size * 2);
+        ctx.drawImage(this.image, 0-this.size, 0-this.size, this.size * 3, this.size * 2);
+
+        //ctx.beginPath();
+        //ctx.arc(0, 0, this.size, 1, Math.PI * 2);
+        //ctx.stroke();
+        
         ctx.restore();
     }
 }
