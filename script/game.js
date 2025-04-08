@@ -145,13 +145,17 @@ var username;
 var leaderboard = {};
 
 function startGame() {
-    username = prompt("Enter your username", "xXxCoolPlayerxXx");
+    username = prompt("Identify yourself, soldier. Type in your callsign!", "NovaHawk");
     if (username == null || username.length <= 0) {
-        alert("Give a valid username!");
+        alert("That's not a valid callsign, soldier! Try again!");
         return;
     }
 
     gameRuning = true;
     main.classList.toggle("hidden");
     game = new GameArea();
+}
+
+function howToPlay() {
+    alert("Listen up, pilot!\nUse W, A, S, and D to steer that ship.\nAsteroids are everywhere — hit one, and you're done.\nYour weapons auto-fire toward your cursor, so keep it sharp.\nBlast those rocks to earn points.\nThe more you score, the higher your rank on the leaderboard.\nBut be warned: the more you climb, the more hell comes flying at you.\n\nNow move out — and don't die!");
 }
