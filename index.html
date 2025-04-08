@@ -8,13 +8,28 @@
     <script src="script/player.js" defer></script>
     <script src="script/bullet.js" defer></script>
     <script src="script/asteroid.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tiny5&display=swap" rel="stylesheet">
     <title>Asteroids</title>
 </head>
 <body>
-    <div>
-        <button id="start_button" onclick="startGame()">start</button>
-    </div>
-    <div>
+    <div class="main" id="main">
+        <div>
+            <h1>Asteroids</h1>
+            <div class="center">
+                <button id="start_button" onclick="startGame()">Start</button>
+            </div>
+            <div class="center">
+                <button>How to play?</button>
+            </div>
+            <div class="leaderboard">
+                <h1>Leaderboard</h1>
+                <div id="leaders"></div>
+            </div>
+        </div>
+    </div class="main">
+    <div class="hidden">
         <img src="media/falcon.png" id="ship">
         <img src="media/asteroid1.png" id="asteroid1">
         <img src="media/bg.png" id="gackground">

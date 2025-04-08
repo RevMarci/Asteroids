@@ -1,10 +1,40 @@
+:root {
+    --blue: #01F1F7;
+}
+
 * {
     margin: 0;
     padding: 0;
 }
 
+html {
+    height: 100%;
+}
+
 body {
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-image: url("media/bg.png");
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+}
+
+h1, p, button {
+    font-family: "Tiny5", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: var(--blue);
+}
+
+h1 {
+    font-size: 50px;
+    text-align: center;
 }
 
 canvas {
@@ -12,17 +42,46 @@ canvas {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
-#asteroid2 {
-    rotate: 90deg;
+.main {
+    margin: 20px;
+    width: 400px;
+    min-height: 500px;
+    border: 3px solid var(--blue);
+    display: flex;
+    justify-content: center;
+    padding: 15px;
 }
 
-#asteroid3 {
-    rotate: 180deg;
+button {
+    background-color: transparent;
+    width: 100px;
+    padding: 7px;
+    margin: 15px;
+    border: 1px solid var(--blue);
+    font-size: x-large;
 }
 
-#asteroid4 {
-    rotate: 270deg;
+button:hover {
+    background-color: var(--blue);
+    color: black;
+}
+
+.leaderboard {
+    width: 300px;
+    min-height: 200px;
+    border: 2px solid var(--blue);
+}
+
+.leaderboard h1 {
+    font-size: 25px;
+    border-bottom: 2px solid var(--blue);
+    padding: 10px;
+}
+
+#leaders p {
+    font-size: 20px;
+    margin: 5px;
 }

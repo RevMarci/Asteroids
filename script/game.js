@@ -71,7 +71,11 @@ class GameArea {
             }
 
             if (asteroid.isHit(this.player.x, this.player.y, this.player.size)) {
-                this.endGame();
+                if (gameRuning) {
+                    gameRuning = false;
+                    this.endGame();
+                }
+                return;
             }
 
             return !asteroid.isOutOfBounds();
@@ -106,6 +110,10 @@ class GameArea {
     }
 
     endGame() {
+        alert("You died!\n" + username + "'s points: " + this.points);
+        leaderboard[username] = this.points;
+        console.log(leaderboard);
+
         if (this.animationFrameId) {
             cancelAnimationFrame(this.animationFrameId);
         }
@@ -119,11 +127,31 @@ class GameArea {
         if (document.body.contains(this.canvas)) {
             document.body.removeChild(this.canvas);
         }
+
+        let output = "";
+        for (const key in leaderboard) {
+            output += '<p>' + key + ' - ' + leaderboard[key] + '</p>';
+        }
+        document.getElementById("leaders").innerHTML = output;
+
+        main.classList.toggle("hidden");
     }
 }
 
+var gameRuning = false;
+var main = document.getElementById("main");
 var game;
+var username;
+var leaderboard = {};
 
 function startGame() {
+    username = prompt("Enter your username", "xXxCoolPlayerxXx");
+    if (username == null || username.length <= 0) {
+        alert("Give a valid username!");
+        return;
+    }
+
+    gameRuning = true;
+    main.classList.toggle("hidden");
     game = new GameArea();
 }
