@@ -111,7 +111,7 @@ class GameArea {
 
     endGame() {
         alert("You died!\n" + username + "'s points: " + this.points);
-        leaderboard[username] = this.points;
+        leaderboard.push(new User(username, this.points));
         console.log(leaderboard);
 
         if (this.animationFrameId) {
@@ -128,9 +128,10 @@ class GameArea {
             document.body.removeChild(this.canvas);
         }
 
+        leaderboard.sort(function(a, b){return b.point - a.point});
         let output = "";
-        for (const key in leaderboard) {
-            output += '<p>' + key + ' - ' + leaderboard[key] + '</p>';
+        for (const user of leaderboard) {
+            output += '<p>' + user.name + ' - ' + user.point + '</p>';
         }
         document.getElementById("leaders").innerHTML = output;
 
@@ -138,11 +139,18 @@ class GameArea {
     }
 }
 
+class User {
+    constructor (name, point) {
+        this.name = name;
+        this.point = point;
+    }
+}
+
 var gameRuning = false;
 var main = document.getElementById("main");
 var game;
 var username;
-var leaderboard = {};
+var leaderboard = [];
 
 function startGame() {
     username = prompt("Identify yourself, soldier. Type in your callsign!", "NovaHawk");
