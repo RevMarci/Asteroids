@@ -1,5 +1,6 @@
 class Asteroid {
-    constructor(lvl, x = 0, y = 0, angle = 0) {
+    constructor(devView, lvl, x = 0, y = 0, angle = 0) {
+        this.devView = devView;
         this.image = document.getElementById("asteroid1");
         this.lvl = lvl;
         switch (this.lvl) {
@@ -68,9 +69,12 @@ class Asteroid {
 
         ctx.drawImage(this.image, this.x - this.size * 1.05, this.y - this.size * 1.05, this.size * 2.1, this.size * 2.1);
 
-        //ctx.beginPath();
-        //ctx.arc(this.x, this.y, this.size ,0 ,2*Math.PI);
-        //ctx.stroke();
+        if (this.devView) {
+            ctx.beginPath();
+            ctx.strokeStyle = "red";
+            ctx.arc(this.x, this.y, this.size ,0 ,2*Math.PI);
+            ctx.stroke();
+        }
     }
 
     update() {

@@ -1,7 +1,9 @@
 class GameArea {
     static instance;
 
-    constructor() {
+    constructor(devView) {
+        this.devView = devView;
+
         GameArea.instance = this;
         this.canvas = document.createElement("canvas");
         this.canvas.width = window.innerWidth;
@@ -17,7 +19,7 @@ class GameArea {
         window.addEventListener("keydown", this.handleKeyDown);
         window.addEventListener("keyup", this.handleKeyUp);
 
-        this.player = new Player(window.innerWidth / 2, window.innerHeight / 2);
+        this.player = new Player(window.innerWidth / 2, window.innerHeight / 2, this.devView);
         this.points = 0;
         this.spawnRate = 1500;
 
@@ -64,7 +66,7 @@ class GameArea {
 
                 if (asteroid.lvl != 1) {
                     for (let i = 0; i < Math.floor(Math.random() * 3) + 1; i++) {
-                        newAsteroids.push(new Asteroid(asteroid.lvl - 1, asteroid.x, asteroid.y, asteroid.angle + Math.random() - 0.7));
+                        newAsteroids.push(new Asteroid(this.devView, asteroid.lvl - 1, asteroid.x, asteroid.y, asteroid.angle + Math.random() - 0.7));
                     }
                 }
                 return false;
@@ -91,7 +93,7 @@ class GameArea {
     }
 
     spawnAsteroid() {
-        let asteroid = new Asteroid(Math.floor(Math.random() * 2) + 2);
+        let asteroid = new Asteroid(this.devView, Math.floor(Math.random() * 2) + 2);
         this.asteroids.push(asteroid);
     }
 
@@ -153,6 +155,9 @@ var username;
 var leaderboard = [];
 
 function startGame() {
+    devView = document.getElementById("devView").checked;
+    console.log("Dev view status: " + devView);
+
     username = prompt("Identify yourself, soldier. Type in your callsign!", "NovaHawk");
     if (username == null || username.length <= 0) {
         alert("That's not a valid callsign, soldier! Try again!");
@@ -161,7 +166,7 @@ function startGame() {
 
     gameRuning = true;
     main.classList.toggle("hidden");
-    game = new GameArea();
+    game = new GameArea(devView);
 }
 
 function howToPlay() {

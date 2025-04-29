@@ -25,7 +25,7 @@ body {
     justify-content: center;
 }
 
-h1, p, button {
+h1, p, button, label {
     font-family: "Tiny5", sans-serif;
     font-weight: 400;
     font-style: normal;
@@ -57,7 +57,7 @@ canvas {
 
 button {
     background-color: transparent;
-    width: 100px;
+    min-width: 100px;
     padding: 7px;
     margin: 15px;
     border: 1px solid var(--blue);
@@ -69,9 +69,60 @@ button:hover {
     color: black;
 }
 
+.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: auto;
+    margin: 15px;
+    border: 1px solid var(--blue);
+    font-size: x-large;
+    padding: 7px;
+}
+
+.checkbox label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.checkbox input {
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: 18px;
+    width: 18px;
+    border: 1px solid var(--blue);
+    padding: 4px;
+    background-color: transparent;
+    flex-shrink: 0;
+}
+
+.checkmark div {
+    width: 100%;
+    height: 100%;
+    background-color: var(--blue);
+    display: none;
+}
+
+.checkbox input:checked + .checkmark div {
+    display: block;
+}
+
+
 .leaderboard {
     width: 300px;
     min-height: 200px;
+    margin: 15px;
     border: 2px solid var(--blue);
 }
 
@@ -84,4 +135,8 @@ button:hover {
 #leaders p {
     font-size: 20px;
     margin: 5px;
+}
+
+.name {
+    font-size: large;
 }

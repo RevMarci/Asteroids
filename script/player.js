@@ -1,5 +1,5 @@
 class Player {
-    constructor(x, y) {
+    constructor(x, y, devView) {
         this.image = document.getElementById("ship");
         this.size = 30;
         this.x = x;
@@ -11,6 +11,8 @@ class Player {
         this.lastY = y; // Utolsó Y pozíció
 
         window.addEventListener("mousemove", (e) => this.updateAngle(e));
+
+        this.devView = devView;
     }
 
     updateAngle(event) {
@@ -58,9 +60,12 @@ class Player {
         //ctx.drawImage(this.image, this.x - this.size, this.y- this.size, this.size * 2, this.size * 2);
         ctx.drawImage(this.image, 0-this.size, 0-this.size, this.size * 3, this.size * 2);
 
-        //ctx.beginPath();
-        //ctx.arc(0, 0, this.size, 1, Math.PI * 2);
-        //ctx.stroke();
+        if (this.devView) {
+            ctx.beginPath();
+            ctx.strokeStyle = "red";
+            ctx.arc(0, 0, this.size, 0, Math.PI * 2);
+            ctx.stroke();
+        }
         
         ctx.restore();
     }
