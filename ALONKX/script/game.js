@@ -29,6 +29,10 @@ class GameArea {
         this.asteroidInterval = setInterval(() => this.spawnAsteroid(), this.spawnRate);
         this.bulletInterval = setInterval(() => this.spawnBullet(), 300);
 
+        const explosion = document.getElementById('explosion');
+        const punch = document.getElementById('explosion');
+        const lazer = document.getElementById('explosion');
+
         this.animationFrameId = null;
         this.updateGameArea();
     }
@@ -50,6 +54,8 @@ class GameArea {
 
             this.bullets = this.bullets.filter(bullet => {
                 if (asteroid.isHit(bullet.x, bullet.y, bullet.size)) {
+                    punch.currentTime = 0;
+                    punch.play();
                     asteroid.health--;
                     return false;
                 }
@@ -57,6 +63,9 @@ class GameArea {
             });
 
             if (asteroid.health == 0) {
+                explosion.currentTime = 0;
+                explosion.play();
+
                 this.points += asteroid.point;
                 this.spawnRate = Math.max(200, this.spawnRate - asteroid.lvl * 5);
                 //this.spawnRate = 400 + 1100 * Math.exp(-0.01826 * this.points);
@@ -98,6 +107,9 @@ class GameArea {
     }
 
     spawnBullet() {
+        lazer.volume = 0.2;
+        lazer.currentTime = 0;
+        lazer.play();
         let bullet = new Bullet(this.player.x, this.player.y, this.player.angle);
         this.bullets.push(bullet);
     }
