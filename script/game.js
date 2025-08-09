@@ -5,19 +5,23 @@ class GameArea {
         this.devView = devView;
 
         GameArea.instance = this;
-        this.canvas = document.createElement("canvas");
+        this.canvas = document.createElement('canvas');
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
-        this.context = this.canvas.getContext("2d");
+        this.context = this.canvas.getContext('2d');
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-        this.backgroundImage = document.getElementById("gackground");
+        this.backgroundImage = document.getElementById('gackground');
 
         this.keys = {};
-        this.handleKeyDown = (e) => { this.keys[e.key] = true; };
-        this.handleKeyUp = (e) => { this.keys[e.key] = false; };
+        this.handleKeyDown = (e) => {
+            this.keys[e.key] = true;
+        };
+        this.handleKeyUp = (e) => {
+            this.keys[e.key] = false;
+        };
 
-        window.addEventListener("keydown", this.handleKeyDown);
-        window.addEventListener("keyup", this.handleKeyUp);
+        window.addEventListener('keydown', this.handleKeyDown);
+        window.addEventListener('keyup', this.handleKeyUp);
 
         this.player = new Player(window.innerWidth / 2, window.innerHeight / 2, this.devView);
         this.points = 0;
@@ -25,7 +29,7 @@ class GameArea {
 
         this.asteroids = [];
         this.bullets = [];
-        
+
         this.asteroidInterval = setInterval(() => this.spawnAsteroid(), this.spawnRate);
         this.bulletInterval = setInterval(() => this.spawnBullet(), 300);
 
@@ -42,6 +46,8 @@ class GameArea {
     }
 
     updateGameArea() {
+        if (!gameRuning) return;
+
         this.clear();
         this.drawBackground();
         this.player.update();
@@ -49,10 +55,10 @@ class GameArea {
         this.drawPoints();
 
         let newAsteroids = [];
-        this.asteroids = this.asteroids.filter(asteroid => {
+        this.asteroids = this.asteroids.filter((asteroid) => {
             asteroid.update();
 
-            this.bullets = this.bullets.filter(bullet => {
+            this.bullets = this.bullets.filter((bullet) => {
                 if (asteroid.isHit(bullet.x, bullet.y, bullet.size)) {
                     punch.currentTime = 0;
                     punch.play();
@@ -69,7 +75,7 @@ class GameArea {
                 this.points += asteroid.point;
                 this.spawnRate = Math.max(200, this.spawnRate - asteroid.lvl * 5);
                 //this.spawnRate = 400 + 1100 * Math.exp(-0.01826 * this.points);
-                console.log("SpawnRate: " + this.spawnRate);
+                console.log('SpawnRate: ' + this.spawnRate);
                 clearInterval(this.asteroidInterval);
                 this.asteroidInterval = setInterval(() => this.spawnAsteroid(), this.spawnRate);
 
@@ -86,14 +92,14 @@ class GameArea {
                     gameRuning = false;
                     this.endGame();
                 }
-                return;
+                return false;
             }
 
             return !asteroid.isOutOfBounds();
         });
         this.asteroids = [...this.asteroids, ...newAsteroids];
 
-        this.bullets = this.bullets.filter(bullet => {
+        this.bullets = this.bullets.filter((bullet) => {
             bullet.update();
             return !bullet.isOutOfBounds();
         });
@@ -115,7 +121,7 @@ class GameArea {
     }
 
     drawPoints() {
-        this.context.font = "50px arial";
+        this.context.font = '50px arial';
         this.context.fillText(this.points, 100, 60);
     }
 
@@ -124,7 +130,12 @@ class GameArea {
     }
 
     endGame() {
-        alert("You died!\n" + username + "'s points: " + this.points);
+        this.asteroids.length = 0;
+        this.keys = {};
+        window.removeEventListener('keydown', this.handleKeyDown);
+        window.removeEventListener('keyup', this.handleKeyUp);
+
+        alert('You died!\n' + username + "'s points: " + this.points);
         leaderboard.push(new User(username, this.points));
         console.log(leaderboard);
 
@@ -135,49 +146,50 @@ class GameArea {
         clearInterval(this.asteroidInterval);
         clearInterval(this.bulletInterval);
 
-        window.removeEventListener("keydown", this.handleKeyDown);
-        window.removeEventListener("keyup", this.handleKeyUp);
-
         if (document.body.contains(this.canvas)) {
             document.body.removeChild(this.canvas);
         }
 
-        leaderboard.sort(function(a, b){return b.point - a.point});
-        let output = "";
+        leaderboard.sort(function (a, b) {
+            return b.point - a.point;
+        });
+        let output = '';
         for (const user of leaderboard) {
             output += '<p>' + user.name + ' - ' + user.point + '</p>';
         }
-        document.getElementById("leaders").innerHTML = output;
+        document.getElementById('leaders').innerHTML = output;
 
-        main.classList.toggle("hidden");
+        main.classList.toggle('hidden');
     }
 }
 
 class User {
-    constructor (name, point) {
+    constructor(name, point) {
         this.name = name;
         this.point = point;
     }
 }
 
 var gameRuning = false;
-var main = document.getElementById("main");
+var main = document.getElementById('main');
 var game;
 var username;
 var leaderboard = [];
 
 function startGame() {
-    devView = document.getElementById("devView").checked;
-    console.log("Dev view status: " + devView);
+    game = null;
 
-    username = prompt("Identify yourself, soldier. Type in your callsign!", "NovaHawk");
+    devView = document.getElementById('devView').checked;
+    console.log('Dev view status: ' + devView);
+
+    username = prompt('Identify yourself, soldier. Type in your callsign!', 'NovaHawk');
     if (username == null || username.length <= 0) {
         alert("That's not a valid callsign, soldier! Try again!");
         return;
     }
 
     gameRuning = true;
-    main.classList.toggle("hidden");
+    main.classList.toggle('hidden');
     game = new GameArea(devView);
 }
 
