@@ -33,9 +33,12 @@ class GameArea {
         this.asteroidInterval = setInterval(() => this.spawnAsteroid(), this.spawnRate);
         this.bulletInterval = setInterval(() => this.spawnBullet(), 300);
 
-        const explosion = document.getElementById('explosion');
-        const punch = document.getElementById('explosion');
-        const lazer = document.getElementById('explosion');
+        this.explosion = document.getElementById('explosion');
+        this.explosion.volume = 0.2;
+        this.punch = document.getElementById('punch');
+        this.punch.volume = 0.2;
+        this.lazer = document.getElementById('lazer');
+        this.lazer.volume = 0.05;
 
         this.animationFrameId = null;
         this.updateGameArea();
@@ -60,8 +63,8 @@ class GameArea {
 
             this.bullets = this.bullets.filter((bullet) => {
                 if (asteroid.isHit(bullet.x, bullet.y, bullet.size)) {
-                    punch.currentTime = 0;
-                    punch.play();
+                    this.punch.currentTime = 0;
+                    this.punch.play();
                     asteroid.health--;
                     return false;
                 }
@@ -69,8 +72,8 @@ class GameArea {
             });
 
             if (asteroid.health == 0) {
-                explosion.currentTime = 0;
-                explosion.play();
+                this.explosion.currentTime = 0;
+                this.explosion.play();
 
                 this.points += asteroid.point;
                 this.spawnRate = Math.max(200, this.spawnRate - asteroid.lvl * 5);
@@ -81,7 +84,15 @@ class GameArea {
 
                 if (asteroid.lvl != 1) {
                     for (let i = 0; i < Math.floor(Math.random() * 3) + 1; i++) {
-                        newAsteroids.push(new Asteroid(this.devView, asteroid.lvl - 1, asteroid.x, asteroid.y, asteroid.angle + Math.random() - 0.7));
+                        newAsteroids.push(
+                            new Asteroid(
+                                this.devView,
+                                asteroid.lvl - 1,
+                                asteroid.x,
+                                asteroid.y,
+                                asteroid.angle + Math.random() - 0.7
+                            )
+                        );
                     }
                 }
                 return false;
@@ -113,9 +124,8 @@ class GameArea {
     }
 
     spawnBullet() {
-        lazer.volume = 0.2;
-        lazer.currentTime = 0;
-        lazer.play();
+        this.lazer.currentTime = 0;
+        this.lazer.play();
         let bullet = new Bullet(this.player.x, this.player.y, this.player.angle);
         this.bullets.push(bullet);
     }
@@ -194,5 +204,7 @@ function startGame() {
 }
 
 function howToPlay() {
-    alert("Listen up, pilot!\nUse W, A, S, and D to steer that ship.\nAsteroids are everywhere — hit one, and you're done.\nYour weapons auto-fire toward your cursor, so keep it sharp.\nBlast those rocks to earn points.\nThe more you score, the higher your rank on the leaderboard.\nBut be warned: the more you climb, the more hell comes flying at you.\n\nNow move out — and don't die!");
+    alert(
+        "Listen up, pilot!\nUse W, A, S, and D to steer that ship.\nAsteroids are everywhere — hit one, and you're done.\nYour weapons auto-fire toward your cursor, so keep it sharp.\nBlast those rocks to earn points.\nThe more you score, the higher your rank on the leaderboard.\nBut be warned: the more you climb, the more hell comes flying at you.\n\nNow move out — and don't die!"
+    );
 }
